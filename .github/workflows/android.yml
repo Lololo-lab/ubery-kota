@@ -1,0 +1,47 @@
+name: Android build
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['docs/**', '*.md', 'store/**']
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Install and sync web assets
+        run: |
+          npm ci
+          npx cap sync android
+
+      - name: Build AAB (Google Play, unsigned - signed later) and debug APK (test on phone)
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon bundleRelease assembleDebug
+
+      - name: Collect files
+        run: |
+          mkdir -p out
+          cp android/app/build/outputs/bundle/release/*.aab out/ubery-kota.aab
+          cp android/app/build/outputs/apk/debug/*.apk out/ubery-kota-test.apk
+          ls -la out
+
+      - uses: actions/upload-artifact@v5
+        with:
+          name: ubery-kota-build
+          path: out/
+          retention-days: 30

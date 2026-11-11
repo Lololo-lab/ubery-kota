@@ -1,0 +1,12 @@
+{
+  "appId": "kg.lololo.uberikota",
+  "appName": "Убери кота",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#1a1442",
+    "allowMixedContent": false
+  },
+  "plugins": {
+    "SplashScreen": { "launchShowDuration": 0 }
+  }
+}
