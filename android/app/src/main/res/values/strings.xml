@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Убери кота</string>
-    <string name="title_activity_main">Убери кота</string>
+    <string name="app_name">Tuck the Cats</string>
+    <string name="title_activity_main">Tuck the Cats</string>
     <string name="package_name">kg.lololo.uberikota</string>
     <string name="custom_url_scheme">kg.lololo.uberikota</string>
     <!-- AdMob App ID. Сейчас стоит ТЕСТОВЫЙ ID Google. Замените на свой из AdMob (ca-app-pub-XXXX~YYYY) -->
