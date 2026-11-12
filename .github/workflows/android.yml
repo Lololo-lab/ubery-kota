@@ -122,9 +122,6 @@ jobs:
             python3 tools/tap_text.py "Ranking" >> taps.txt
             sleep 3
             adb exec-out screencap -p > s4-nick.png
-            python3 tools/tap_text.py "Save" >> taps.txt
-            sleep 8
-            adb exec-out screencap -p > s5-board.png
             adb shell pidof kg.lololo.uberikota > alive.txt || echo "APP NOT RUNNING" > alive.txt
             adb logcat -d > logcat.txt
 
