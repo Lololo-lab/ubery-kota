@@ -552,10 +552,10 @@ const parts=[],texts=[],dying=[],flyCats=[];
 
 function levelCfg(n){
   const goal=Math.min(3+Math.floor((n-1)/2),15);
-  const k=n<=3?5.5:n<=10?4.8:n<=20?4.3:n<=35?3.9:3.6;
+  const k=n<=3?8:n<=10?7.5:n<=20?6:n<=35?5.3:4.8;
   return{n,goal,moves:Math.round(goal*k)+6,
     types:n<4?['norm']:n<9?['norm','norm','sleepy']:['norm','norm','sleepy','kitten'],
-    start:n<3?2:3,maxCats:Math.min(3+Math.floor(n/6),6),blocks:n<3?0:Math.min(2+Math.floor(n/2),16)};
+    start:3,maxCats:Math.min(5+Math.floor(n/8),7),blocks:n<3?0:Math.min(Math.floor(n/4)+1,8)};
 }
 function canPlace(p,r,c){for(const[dr,dc]of p.cells){const y=r+dr,x=c+dc;if(y<0||x<0||y>=N||x>=N||grid[y*N+x])return false}return true}
 function fitsAny(p){for(let r=0;r<=N-p.h;r++)for(let c=0;c<=N-p.w;c++)if(canPlace(p,r,c))return true;return false}
@@ -581,7 +581,7 @@ function spawnCat(silent){
 function placeBlocks(n){
   let k=0,tries=0;while(k<n&&tries<400){tries++;const i=rnd(N*N);if(grid[i])continue;const r=Math.floor(i/N),c=i%N;let rf=0,cf=0;for(let j=0;j<N;j++){if(grid[r*N+j])rf++;if(grid[j*N+c])cf++}if(rf>=5||cf>=5)continue;grid[i]={k:'t',ci:rnd(6),t0:time+k*.03};k++}
 }
-function newTray(){let t;for(let k=0;k<40;k++){t=[makePiece(),makePiece(),makePiece()];if(t.some(fitsAny))break}t.forEach((p,i)=>p.t0=time+i*.08);return t}
+function newTray(){let t,bt=null;for(let k=0;k<50;k++){t=[makePiece(),makePiece(),makePiece()];const f=t.filter(fitsAny).length;if(f===3)break;if(f>0&&!bt)bt=t;if(k===49&&bt)t=bt}t.forEach((p,i)=>p.t0=time+i*.08);return t}
 
 // ---------- частицы ----------
 function burst(x,y,cols,n,type='sq',power=1){for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,sp=rr(60,260)*power;parts.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-rr(40,140)*power,life:0,max:rr(.5,1),s:rr(3,7)*(type==='star'?1.3:1),col:cols[rnd(cols.length)],type,rot:Math.random()*6,vr:rr(-8,8),grav:type==='heart'?-60:520})}}
@@ -638,7 +638,7 @@ function checkWake(){
 }
 function continueTurn(){
   const cc=catCount();
-  if(mode==='level'){if(cc<cfg.maxCats&&(cc<2||moves%2===0))setTimeout(()=>{if(state==='play'){spawnCat();checkStuck()}},350)}
+  if(mode==='level'){if(cc<cfg.maxCats&&(cc<3||moves%2===0))setTimeout(()=>{if(state==='play'){spawnCat();checkStuck()}},350)}
   else{const every=score>2000?2:3;if(cc<5&&(moves%every===0||cc<2))setTimeout(()=>{if(state==='play'){spawnCat();checkStuck()}},350)}
   if(tray.every(x=>!x))tray=newTray();
   checkStuck();
@@ -1022,7 +1022,7 @@ if(APP){
 let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,120)});
 applyBg();layout();goMenu();requestAnimationFrame(frame);Ads.init();
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>sprites.clear());
-window.__ubk={get state(){return state},get scene(){return scene},get score(){return score},get tray(){return tray},get grid(){return grid},get L(){return L},get SV(){return SV},get cfg(){return cfg},get movesLeft(){return movesLeft},get removed(){return removed},place,canPlace,touchedCats,N,startLevel,startEndless};
+window.__ubk={drawCatTo:(cx,x,y,s,q)=>swapCtx(cx,()=>{drawCat(x,y,s,q,'sleep')}),tileTo:(cx,col,x,y,s)=>swapCtx(cx,()=>drawTile(col,x,y,s)),get state(){return state},get scene(){return scene},get score(){return score},get tray(){return tray},get grid(){return grid},get L(){return L},get SV(){return SV},get cfg(){return cfg},get movesLeft(){return movesLeft},get removed(){return removed},place,canPlace,touchedCats,N,startLevel,startEndless};
 })();
 </script>
 </body>
