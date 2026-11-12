@@ -1,0 +1,6 @@
+tapped Play 722 2300
+tapped Got it 720 2263
+tapped go! 720 1853
+tapped Menu 720 2070
+tapped Claim 720 2219
+tapped Ranking 1163 2812
