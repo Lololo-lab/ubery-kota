@@ -117,6 +117,8 @@ jobs:
             sleep 2
             python3 tools/tap_text.py "Menu" >> taps.txt
             sleep 3
+            python3 tools/tap_text.py "Claim" --exact >> taps.txt
+            sleep 2
             python3 tools/tap_text.py "Ranking" >> taps.txt
             sleep 3
             adb exec-out screencap -p > s4-nick.png
