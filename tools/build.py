@@ -14,6 +14,8 @@ for w in (800, 900):
         faces.append(f"@font-face{{font-family:'Nunito';font-style:normal;font-weight:{w};font-display:swap;src:url(data:font/woff2;base64,{b}) format('woff2');unicode-range:{rng}}}")
 # 700 -> используем 800
 out = src.replace('/*FONTS*/', '\n'.join(faces))
+cap = (root / 'node_modules/@capacitor/core/dist/capacitor.js').read_text(encoding='utf-8')
+out = out.replace('<script>/*CAPACITOR*/</script>', '<script>' + cap + '</script>')
 (root / 'www').mkdir(exist_ok=True)
 (root / 'www/index.html').write_text(out, encoding='utf-8')
 print('www/index.html', len(out) // 1024, 'KB')

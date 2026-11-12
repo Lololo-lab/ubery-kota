@@ -305,6 +305,7 @@ canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block}
   <small>демо-версия: в приложении здесь настоящая реклама</small>
 </div>
 
+<script>/*CAPACITOR*/</script>
 <script>
 (()=>{
 'use strict';
@@ -323,10 +324,11 @@ const ADCFG={
 const VERSION='1.0.0';
 const PRIVACY_URL='https://github.com/Lololo-lab/ubery-kota/blob/main/PRIVACY.md';
 
-const CAP=window.Capacitor;
+const CAP=window.Capacitor,CX=window.capacitorExports;
 const NATIVE=!!(CAP&&CAP.isNativePlatform&&CAP.isNativePlatform());
-const PL=NATIVE&&CAP.Plugins?CAP.Plugins:{};
-const ADM=PL.AdMob||null,APP=PL.App||null;
+function plug(n){try{if(!NATIVE)return null;if(CX&&CX.registerPlugin)return CX.registerPlugin(n);return CAP.Plugins&&CAP.Plugins[n]||null}catch(e){return null}}
+const ADM=plug('AdMob'),APP=plug('App');
+function listen(pl,ev,fn){try{const r=pl.addListener(ev,fn);return Promise.resolve(r).catch(()=>null)}catch(e){return Promise.resolve(null)}}
 
 // ---------- утилиты ----------
 const $=id=>document.getElementById(id);
@@ -450,7 +452,7 @@ const Ads={
     try{await ADM.initialize({initializeForTesting:ADCFG.test})}catch(e){}
     try{let ci=await ADM.requestConsentInfo();if(ci.isConsentFormAvailable&&ci.status==='REQUIRED')ci=await ADM.showConsentForm();this.canReq=ci.canRequestAds!==false;this.privReq=ci.privacyOptionsRequirementStatus==='REQUIRED'}catch(e){}
     $('bPrivAds').style.display=this.privReq?'flex':'none';
-    try{ADM.addListener('bannerAdSizeChanged',s=>{this.bannerH=s&&s.height?s.height:0;layout()})}catch(e){}
+    listen(ADM,'bannerAdSizeChanged',s=>{this.bannerH=s&&s.height?s.height:0;layout()});
     this.ready=true;this.loadInter();this.loadRew();if(this.bannerWant)this.showBanner();
   },
   loadInter(){if(!this.ready||!this.canReq)return;this.interOk=false;ADM.prepareInterstitial({adId:ADCFG.interstitial,isTesting:ADCFG.test}).then(()=>{this.interOk=true}).catch(()=>{setTimeout(()=>this.loadInter(),30000)})},
@@ -476,15 +478,15 @@ const Ads={
     if(!NATIVE){return webAd('РЕКЛАМА ЗА НАГРАДУ',4,onOk)}
     if(!this.ready||!this.canReq||!this.rewOk){toast('Реклама загружается, попробуй через пару секунд');this.loadRew();onFail&&onFail();return}
     let got=false;
-    const h=[];ADM.addListener('onRewardedVideoAdReward',()=>{got=true}).then(x=>h.push(x)).catch(()=>{});
+    const h=[];listen(ADM,'onRewardedVideoAdReward',()=>{got=true}).then(x=>{if(x)h.push(x)});
     this.fullscreen('onRewardedVideoAdDismissed','onRewardedVideoAdFailedToShow',()=>ADM.showRewardVideoAd().then(()=>{got=true}),()=>{h.forEach(x=>x.remove());this.loadRew();if(got)onOk();else{toast('Награда за рекламу не получена');onFail&&onFail()}});
   },
   fullscreen(evDone,evFail,show,after){
     let fin=false;const hs=[];
     const done=()=>{if(fin)return;fin=true;hs.forEach(x=>x&&x.remove&&x.remove());A.adPause=false;audioResume();setTimeout(after,120)};
     A.adPause=true;audioSuspend();
-    Promise.all([ADM.addListener(evDone,done),ADM.addListener(evFail,done)]).then(x=>hs.push(...x)).catch(()=>{});
-    show().catch(()=>done());
+    Promise.all([listen(ADM,evDone,done),listen(ADM,evFail,done)]).then(x=>hs.push(...x));
+    try{Promise.resolve(show()).catch(()=>done())}catch(e){done()}
   }
 };
 function webAd(tag,secs,cb){
@@ -1005,22 +1007,25 @@ onBtn('bPrivAds',()=>{if(ADM)ADM.showPrivacyOptionsForm().catch(()=>{})});
 $('privLink').href=PRIVACY_URL;$('verV').textContent='Версия '+VERSION+(NATIVE?'':' · демо')+(ADCFG.test?' · тестовая реклама':'');
 
 // кнопка «назад» на Android
-if(APP){
-  APP.addListener('backButton',()=>{
+function setupNative(){
+  if(!APP)return;
+  listen(APP,'backButton',()=>{
     if($('ad').classList.contains('show'))return;
     const t=topScreen();
     if(t==='shopS'||t==='setS'||t==='buyS'||t==='tutS'||t==='dailyS'){closeTop();if(scene==='game'&&!topScreen()&&state==='paused')state='play';if(t==='shopS')updMenu();return}
     if(t==='pauseS'){resumeGame();return}
     if(scene==='game'&&state==='play'){pauseGame();return}
     if(t==='introS'||t==='overS'||t==='winS'){goMenu();return}
-    if(scene==='menu'&&(t==='menu'||!t))APP.exitApp();
-  }).catch(()=>{});
-  APP.addListener('pause',()=>{if(state==='play')pauseGame()}).catch(()=>{});
+    if(scene==='menu'&&(t==='menu'||!t)){try{APP.exitApp()}catch(e){}}
+  });
+  listen(APP,'pause',()=>{if(state==='play')pauseGame()});
 }
 
 // ---------- запуск ----------
 let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,120)});
-applyBg();layout();goMenu();requestAnimationFrame(frame);Ads.init();
+applyBg();layout();goMenu();requestAnimationFrame(frame);
+try{setupNative()}catch(e){}
+try{Ads.init().catch(()=>{})}catch(e){}
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>sprites.clear());
 window.__ubk={win:()=>{removed=cfg.goal;movesLeft=Math.round(cfg.moves*.5);winLevel()},drawCatTo:(cx,x,y,s,q)=>swapCtx(cx,()=>{drawCat(x,y,s,q,'sleep')}),tileTo:(cx,col,x,y,s)=>swapCtx(cx,()=>drawTile(col,x,y,s)),get state(){return state},get scene(){return scene},get score(){return score},get tray(){return tray},get grid(){return grid},get L(){return L},get SV(){return SV},get cfg(){return cfg},get movesLeft(){return movesLeft},get removed(){return removed},place,canPlace,touchedCats,N,startLevel,startEndless};
 })();

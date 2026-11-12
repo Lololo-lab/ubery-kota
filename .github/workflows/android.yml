@@ -59,3 +59,49 @@ jobs:
           git add .
           git commit -q -m "Build ${GITHUB_SHA}"
           git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" builds
+
+  smoke-test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: builds
+          path: b
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Launch the app on Android 15 emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          target: google_apis
+          disable-animations: true
+          script: |
+            adb install -r b/ubery-kota-test.apk
+            adb logcat -c
+            adb shell monkey -p kg.lololo.uberikota -c android.intent.category.LAUNCHER 1
+            sleep 20
+            adb exec-out screencap -p > shot-menu.png
+            adb shell input tap 540 1700
+            sleep 6
+            adb exec-out screencap -p > shot-after-tap.png
+            adb logcat -d > logcat.txt
+
+      - name: Save results to 'smoke' branch
+        if: always()
+        run: |
+          mkdir -p res && cp shot-*.png logcat.txt res/ 2>/dev/null || true
+          grep -E "Capacitor/Console.*(Error|Uncaught)|JavaScript Error|FATAL EXCEPTION" logcat.txt > res/errors.txt || true
+          echo "Build of ${GITHUB_SHA}" > res/BUILD.txt
+          cd res
+          git init -q -b smoke
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add -A && git commit -q -m "smoke ${GITHUB_SHA}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" smoke
