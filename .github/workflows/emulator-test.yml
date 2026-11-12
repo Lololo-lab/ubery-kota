@@ -1,0 +1,54 @@
+name: Emulator smoke test
+
+on:
+  push:
+    branches: [emutest]
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        api: [30, 35]
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: builds
+          path: b
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Run app in emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api }}
+          arch: x86_64
+          target: google_apis
+          disable-animations: true
+          script: |
+            adb install -r b/ubery-kota-test.apk
+            adb logcat -c
+            adb shell monkey -p kg.lololo.uberikota -c android.intent.category.LAUNCHER 1
+            sleep 25
+            adb exec-out screencap -p > shot-${{ matrix.api }}.png
+            adb shell pidof kg.lololo.uberikota > pid-${{ matrix.api }}.txt || echo "NOT RUNNING" > pid-${{ matrix.api }}.txt
+            adb logcat -d > logcat-${{ matrix.api }}.txt
+
+      - name: Save results
+        if: always()
+        run: |
+          mkdir -p res && cp shot-*.png pid-*.txt logcat-*.txt res/ 2>/dev/null || true
+          cd res
+          git init -q -b emu-${{ matrix.api }}
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add -A && git commit -q -m "emulator ${{ matrix.api }}" || true
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" emu-${{ matrix.api }}
