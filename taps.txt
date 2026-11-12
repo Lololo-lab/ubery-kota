@@ -1,0 +1,6 @@
+tapped Play 540 1784
+tapped Got it 540 1736
+tapped go! 540 1429
+NOT FOUND: Menu
+NOT FOUND: Claim
+NOT FOUND: Ranking
