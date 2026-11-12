@@ -162,6 +162,7 @@ canvas#c{position:fixed;top:0;right:0;bottom:0;left:0;width:100%;height:100%;dis
 .sw.on{background:#3fdcab}
 .sw.on::after{left:25px}
 .links{margin-top:12px;font-size:13px;font-weight:800}
+.langb{border:1px solid var(--stroke);background:rgba(255,255,255,.12);color:#fff;border-radius:12px;padding:7px 12px;font-weight:900;font-size:14px}
 .links a{color:#9fd3ff;text-decoration:none;display:block;padding:7px}
 .ver{color:rgba(255,255,255,.35);font-size:12px;font-weight:800;margin-top:6px}
 /* ежедневный бонус */
@@ -178,6 +179,12 @@ canvas#c{position:fixed;top:0;right:0;bottom:0;left:0;width:100%;height:100%;dis
 .lowq *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 .lowq .dim{background:rgba(12,7,32,.88)}
 .lowq #bg .star,.lowq #bg .fall,.lowq .logo h1,.lowq .mbottom .btn.play{animation:none!important}
+/* отступы без flex-gap (старые Android WebView) */
+#boost,.mrow,.stats,.goal,.tabs,.tut .row,.newcat,.item,.stars,#hint,.pill,.score .b,#ad,.btn,.mrow .hbtn,.item .pv{gap:0}
+#boost .bst{margin:0 8px}.mrow>*+*{margin-left:10px}.stats>*+*{margin-left:8px}.goal>*+*{margin-left:10px}.tabs>*+*{margin-left:6px}
+.tut .ic{margin-right:12px}.newcat canvas{margin-right:12px}.item>*+*{margin-top:7px}.stars span{margin:0 3px}#hint button{margin-left:10px}
+.pill>svg{margin-right:6px}.score .b>svg{margin-right:5px}#ad>*+*{margin-top:14px}.btn>svg{margin-right:8px}.mrow .hbtn span.e{margin-bottom:2px}.item .pv i{margin:0 2px}
+@media (max-width:340px){#boost .bst{margin:0 5px}}
 /* реклама-заглушка (только веб-версия) */
 #ad{background:#0b0a12;z-index:80;flex-direction:column;gap:14px;text-align:center}
 #ad .ring{width:120px;height:120px;position:relative}
@@ -195,59 +202,59 @@ canvas#c{position:fixed;top:0;right:0;bottom:0;left:0;width:100%;height:100%;dis
 
 <div id="hud"></div>
 <div id="boost">
-  <button class="bst" id="bHammer" aria-label="Молоток">🔨<i></i></button>
-  <button class="bst" id="bLull" aria-label="Колыбельная">🎵<i></i></button>
-  <button class="bst" id="bReroll" aria-label="Новые пледы">🔄<i></i></button>
+  <button class="bst" id="bHammer" aria-label="Молоток" data-ta="a_hammer">🔨<i></i></button>
+  <button class="bst" id="bLull" aria-label="Колыбельная" data-ta="a_lull">🎵<i></i></button>
+  <button class="bst" id="bReroll" aria-label="Новые пледы" data-ta="a_reroll">🔄<i></i></button>
 </div>
-<div id="hint"><span>🔨 Нажми на плед, чтобы убрать</span><button id="hintX">Отмена</button></div>
-<div id="banner">Место для рекламного баннера</div>
+<div id="hint"><span data-t="hint_hammer">🔨 Нажми на плед, чтобы убрать</span><button id="hintX" data-t="cancel">Отмена</button></div>
+<div id="banner" data-t="banner">Место для рекламного баннера</div>
 <div id="toast"></div>
 
 <div id="menu" class="screen">
   <div class="mtop">
-    <button class="hbtn gift" id="mGift" aria-label="Подарок">🎁<span class="dot"></span></button>
+    <button class="hbtn gift" id="mGift" aria-label="Подарок" data-ta="a_gift">🎁<span class="dot"></span></button>
     <div class="pill coins" id="mCoins">🪙 <b id="coinV">0</b></div>
   </div>
-  <div class="logo"><h1>Убери<br>кота</h1><div class="sub">Уютная головоломка: не разбуди котиков</div></div>
+  <div class="logo"><h1 data-th="logo">Убери<br>кота</h1><div class="sub" data-t="sub">Уютная головоломка: не разбуди котиков</div></div>
   <div style="flex:1"></div>
   <div class="mbottom">
-    <button class="btn play" id="bPlay"><span>▶ Играть</span><small id="playLvl">Уровень 1</small></button>
-    <button class="btn blue" id="bEndless">∞ Бесконечный режим</button>
+    <button class="btn play" id="bPlay"><span data-t="play">▶ Играть</span><small id="playLvl">Уровень 1</small></button>
+    <button class="btn blue" id="bEndless" data-t="endless_btn">∞ Бесконечный режим</button>
     <div class="mrow">
-      <button class="hbtn" id="mShop"><span class="e">🛍️</span>Магазин</button>
-      <button class="hbtn" id="mSet"><span class="e">⚙️</span>Настройки</button>
-      <button class="hbtn" id="mHelp"><span class="e">❓</span>Правила</button>
+      <button class="hbtn" id="mShop"><span class="e">🛍️</span><span data-t="shop">Магазин</span></button>
+      <button class="hbtn" id="mSet"><span class="e">⚙️</span><span data-t="settings">Настройки</span></button>
+      <button class="hbtn" id="mHelp"><span class="e">❓</span><span data-t="rules">Правила</span></button>
     </div>
     <div class="mbest" id="mBest"></div>
   </div>
 </div>
 
 <div id="tutS" class="screen dim"><div class="panel">
-  <h2>Как играть</h2>
+  <h2 data-t="howto">Как играть</h2>
   <div class="tut">
-    <div class="row"><div class="ic" style="background:linear-gradient(135deg,#ff7a8a,#ffb05c)">🧶</div><div>Перетаскивай <b>пледы</b> на поле</div></div>
-    <div class="row"><div class="ic" style="background:linear-gradient(135deg,#5fe0b7,#62c4ff)">🛏️</div><div>Заполни ряд или столбец, и он исчезнет, а спящий в нём кот уедет в кроватку</div></div>
-    <div class="row"><div class="ic" style="background:linear-gradient(135deg,#b38cff,#ff5fa2)">💤</div><div>Не клади плед <b>вплотную</b> к коту: каждый раз он теряет один сон. Кончатся сны, и кот проснётся!</div></div>
-    <div class="row"><div class="ic" style="background:linear-gradient(135deg,#ffd166,#ff9f43)">🔨</div><div>Застрял? Используй <b>подсказки</b> под полем</div></div>
+    <div class="row"><div class="ic" style="background:linear-gradient(135deg,#ff7a8a,#ffb05c)">🧶</div><div data-th="tut1">Перетаскивай <b>пледы</b> на поле</div></div>
+    <div class="row"><div class="ic" style="background:linear-gradient(135deg,#5fe0b7,#62c4ff)">🛏️</div><div data-th="tut2">Заполни ряд или столбец, и он исчезнет, а спящий в нём кот уедет в кроватку</div></div>
+    <div class="row"><div class="ic" style="background:linear-gradient(135deg,#b38cff,#ff5fa2)">💤</div><div data-th="tut3">Не клади плед <b>вплотную</b> к коту: каждый раз он теряет один сон. Кончатся сны, и кот проснётся!</div></div>
+    <div class="row"><div class="ic" style="background:linear-gradient(135deg,#ffd166,#ff9f43)">🔨</div><div data-th="tut4">Застрял? Используй <b>подсказки</b> под полем</div></div>
   </div>
-  <button class="btn" id="bTutOk">Понятно!</button>
+  <button class="btn" id="bTutOk" data-t="gotit">Понятно!</button>
 </div></div>
 
 <div id="introS" class="screen dim"><div class="panel">
-  <div class="lbl" style="font-weight:900;color:var(--muted);letter-spacing:1px;font-size:13px">УРОВЕНЬ</div>
+  <div class="lbl" style="font-weight:900;color:var(--muted);letter-spacing:1px;font-size:13px" data-t="level_cap">УРОВЕНЬ</div>
   <h2 id="iLvl" style="font-size:52px;margin:0">1</h2>
-  <div class="goal"><div><b id="iGoal">3</b><span>уложить котов</span></div><div><b id="iMoves">20</b><span>ходов</span></div></div>
+  <div class="goal"><div><b id="iGoal">3</b><span data-t="goal_cats">уложить котов</span></div><div><b id="iMoves">20</b><span data-t="moves">ходов</span></div></div>
   <div id="iNew"></div>
-  <button class="btn" id="bIntroGo">Поехали!</button>
-  <button class="btn ghost sm" id="bIntroMenu">В меню</button>
+  <button class="btn" id="bIntroGo" data-t="go">Поехали!</button>
+  <button class="btn ghost sm" id="bIntroMenu" data-t="to_menu">В меню</button>
 </div></div>
 
 <div id="pauseS" class="screen dim"><div class="panel">
-  <h2>Пауза</h2><p>Котики сладко спят…</p>
-  <button class="btn" id="bResume">Продолжить</button>
-  <button class="btn ghost" id="bRestart">Начать заново</button>
-  <button class="btn ghost" id="bPSet">Настройки</button>
-  <button class="btn ghost" id="bMenu">В меню</button>
+  <h2 data-t="pause">Пауза</h2><p data-t="pause_sub">Котики сладко спят…</p>
+  <button class="btn" id="bResume" data-t="resume">Продолжить</button>
+  <button class="btn ghost" id="bRestart" data-t="restart">Начать заново</button>
+  <button class="btn ghost" id="bPSet" data-t="settings">Настройки</button>
+  <button class="btn ghost" id="bMenu" data-t="to_menu">В меню</button>
 </div></div>
 
 <div id="overS" class="screen dim"><div class="panel">
@@ -258,25 +265,25 @@ canvas#c{position:fixed;top:0;right:0;bottom:0;left:0;width:100%;height:100%;dis
   <div id="oCoins"></div>
   <button class="btn blue" id="bRevive"></button>
   <button class="btn" id="bAgain">Ещё раз</button>
-  <button class="btn ghost" id="bOMenu">В меню</button>
+  <button class="btn ghost" id="bOMenu" data-t="to_menu">В меню</button>
 </div></div>
 
 <div id="winS" class="screen dim"><div class="panel">
   <div id="wFace"></div>
-  <h2>Уровень пройден!</h2>
+  <h2 data-t="win_title">Уровень пройден!</h2>
   <div class="stars" id="wStars"><span>⭐</span><span>⭐</span><span>⭐</span></div>
   <p id="wSub"></p>
   <div class="coinline">+<span id="wCoins">0</span> 🪙</div>
-  <button class="btn blue" id="bWinX2">Забрать ×2 <span class="adtag">РЕКЛАМА</span></button>
-  <button class="btn" id="bWinNext">Дальше</button>
+  <button class="btn blue" id="bWinX2"><span data-t="claim2">Забрать ×2</span> <span class="adtag" data-t="ad">РЕКЛАМА</span></button>
+  <button class="btn" id="bWinNext" data-t="next">Дальше</button>
 </div></div>
 
 <div id="shopS" class="screen dim"><div class="panel">
   <button class="close" id="shopX">✕</button>
-  <h2>Магазин</h2>
+  <h2 data-t="shop">Магазин</h2>
   <div class="balance">🪙 <span id="shopCoins">0</span></div>
   <button class="btn green sm" id="bFreeCoins">+50 🪙 бесплатно <span class="adtag">РЕКЛАМА</span></button>
-  <div class="tabs"><button data-t="tiles" class="on">Пледы</button><button data-t="bg">Фоны</button><button data-t="acc">Наряды</button></div>
+  <div class="tabs"><button data-k="tiles" class="on" data-t="tab_tiles">Пледы</button><button data-k="bg" data-t="tab_bg">Фоны</button><button data-k="acc" data-t="tab_acc">Наряды</button></div>
   <div class="grid" id="shopGrid"></div>
 </div></div>
 
@@ -284,36 +291,37 @@ canvas#c{position:fixed;top:0;right:0;bottom:0;left:0;width:100%;height:100%;dis
   <button class="close" id="buyX">✕</button>
   <div style="font-size:56px" id="buyIc">🔨</div>
   <h2 id="buyName"></h2><p id="buyDesc"></p>
-  <p>У тебя: <b id="buyHave">0</b> · Монет: <b style="color:#ffd166" id="buyCoins">0</b></p>
+  <p><span data-t="you_have">У тебя:</span> <b id="buyHave">0</b> · <span data-t="coins_lbl">Монет:</span> <b style="color:#ffd166" id="buyCoins">0</b></p>
   <button class="btn" id="bBuyCoins"></button>
-  <button class="btn green" id="bBuyAd">+1 бесплатно <span class="adtag">РЕКЛАМА</span></button>
+  <button class="btn green" id="bBuyAd"><span data-t="plus1">+1 бесплатно</span> <span class="adtag" data-t="ad">РЕКЛАМА</span></button>
 </div></div>
 
 <div id="setS" class="screen dim"><div class="panel">
   <button class="close" id="setX">✕</button>
-  <h2>Настройки</h2>
-  <div class="set">🔊 Звуки<button class="sw" id="swSnd"></button></div>
-  <div class="set">🎵 Музыка<button class="sw" id="swMus"></button></div>
-  <div class="set">📳 Вибрация<button class="sw" id="swVib"></button></div>
-  <button class="btn ghost sm" id="bPrivAds" style="display:none">Настройки рекламы (конфиденциальность)</button>
-  <div class="links"><a id="privLink" href="#" target="_blank" rel="noopener">Политика конфиденциальности</a></div>
+  <h2 data-t="settings">Настройки</h2>
+  <div class="set"><span data-t="snd">🔊 Звуки</span><button class="sw" id="swSnd"></button></div>
+  <div class="set"><span data-t="mus">🎵 Музыка</span><button class="sw" id="swMus"></button></div>
+  <div class="set"><span data-t="vib">📳 Вибрация</span><button class="sw" id="swVib"></button></div>
+  <div class="set"><span data-t="lang">🌐 Язык</span><button class="langb" id="bLang">Русский</button></div>
+  <button class="btn ghost sm" id="bPrivAds" style="display:none" data-t="privads">Настройки рекламы (конфиденциальность)</button>
+  <div class="links"><a id="privLink" href="#" target="_blank" rel="noopener" data-t="privacy">Политика конфиденциальности</a></div>
   <div class="ver" id="verV"></div>
 </div></div>
 
 <div id="dailyS" class="screen dim"><div class="panel">
   <div style="font-size:56px">🎁</div>
-  <h2>Ежедневный подарок</h2>
-  <p>Заходи каждый день, и подарок станет больше!</p>
+  <h2 data-t="daily_title">Ежедневный подарок</h2>
+  <p data-t="daily_sub">Заходи каждый день, и подарок станет больше!</p>
   <div class="days" id="days"></div>
-  <button class="btn green" id="bDailyX2">Забрать ×2 <span class="adtag">РЕКЛАМА</span></button>
-  <button class="btn" id="bDaily">Забрать</button>
+  <button class="btn green" id="bDailyX2"><span data-t="claim2">Забрать ×2</span> <span class="adtag" data-t="ad">РЕКЛАМА</span></button>
+  <button class="btn" id="bDaily" data-t="claim">Забрать</button>
 </div></div>
 
 <div id="ad" class="screen">
   <span class="adtag" id="adTag">РЕКЛАМА</span>
   <div class="ring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" stroke="rgba(255,255,255,.12)" stroke-width="8" fill="none"/><circle id="adbar" cx="60" cy="60" r="52" stroke="#ff5fa2" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="0"/></svg><b id="adN">3</b></div>
-  <div class="t">Здесь будет видео-реклама AdMob</div>
-  <small>демо-версия: в приложении здесь настоящая реклама</small>
+  <div class="t" data-t="ad_here">Здесь будет видео-реклама AdMob</div>
+  <small data-t="ad_demo">демо-версия: в приложении здесь настоящая реклама</small>
 </div>
 
 <script>/*! Capacitor: https://capacitorjs.com/ - MIT License */
@@ -361,21 +369,65 @@ const clone=o=>JSON.parse(JSON.stringify(o));
 function merge(a,b){for(const k in b){if(b[k]&&typeof b[k]==='object'&&!Array.isArray(b[k])&&a[k]&&typeof a[k]==='object')merge(a[k],b[k]);else a[k]=b[k]}return a}
 let SV=(()=>{try{const v=JSON.parse(localStorage.getItem('ubk3')||'null');if(v)return merge(clone(DEF),v)}catch(e){}return clone(DEF)})();
 function save(){try{localStorage.setItem('ubk3',JSON.stringify(SV))}catch(e){}}
+// ---------- языки ----------
+const RU_LANGS=['ru','ky','kk','uk','be','uz','tg','tk','az','hy'];
+function autoLang(){try{const l=String((navigator.languages&&navigator.languages[0])||navigator.language||'ru').toLowerCase().slice(0,2);return RU_LANGS.indexOf(l)>=0?'ru':'en'}catch(e){return 'ru'}}
+let LANG=SV.lang||autoLang();
+const TX={
+ru:{title:'Убери кота',hint_hammer:'🔨 Нажми на плед, чтобы убрать',cancel:'Отмена',banner:'Место для рекламного баннера',logo:'Убери<br>кота',sub:'Уютная головоломка: не разбуди котиков',play:'▶ Играть',level_n:'Уровень {0}',endless_btn:'∞ Бесконечный режим',shop:'Магазин',settings:'Настройки',rules:'Правила',howto:'Как играть',
+ tut1:'Перетаскивай <b>пледы</b> на поле',tut2:'Заполни ряд или столбец, и он исчезнет, а спящий в нём кот уедет в кроватку',tut3:'Не клади плед <b>вплотную</b> к коту: каждый раз он теряет один сон. Кончатся сны, и кот проснётся!',tut4:'Застрял? Используй <b>подсказки</b> под полем',
+ gotit:'Понятно!',level_cap:'УРОВЕНЬ',goal_cats:'уложить котов',moves:'ходов',go:'Поехали!',to_menu:'В меню',pause:'Пауза',pause_sub:'Котики сладко спят…',resume:'Продолжить',restart:'Начать заново',again:'Ещё раз',retry:'Заново',win_title:'Уровень пройден!',claim2:'Забрать ×2',ad:'РЕКЛАМА',next:'Дальше',
+ free50:'+50 🪙 бесплатно',free_tomorrow:'Бесплатные монеты: завтра',tab_tiles:'Пледы',tab_bg:'Фоны',tab_acc:'Наряды',you_have:'У тебя:',coins_lbl:'Монет:',plus1:'+1 бесплатно',snd:'🔊 Звуки',mus:'🎵 Музыка',vib:'📳 Вибрация',lang:'🌐 Язык',lang_name:'Русский',privads:'Настройки рекламы (конфиденциальность)',privacy:'Политика конфиденциальности',
+ daily_title:'Ежедневный подарок',daily_sub:'Заходи каждый день, и подарок станет больше!',claim:'Забрать',ad_here:'Здесь будет видео-реклама AdMob',ad_demo:'демо-версия: в приложении здесь настоящая реклама',
+ a_hammer:'Молоток',a_lull:'Колыбельная',a_reroll:'Новые пледы',a_gift:'Подарок',
+ sh_classic:'Классика',sh_candy:'Конфетки',sh_forest:'Лесные',sh_winter:'Зимние',sh_neon:'Неон',sh_royal:'Королевские',bg_night:'Ночь',bg_sunset:'Закат',bg_sakura:'Сакура',bg_winter:'Зима',bg_space:'Космос',acc_none:'Без наряда',acc_bow:'Бантик',acc_scarf:'Шарфик',acc_mask:'Маска для сна',acc_crown:'Корона',
+ b_hammer_d:'Убирает любой плед с поля',b_lull_d:'Все коты снова крепко спят: сны восстанавливаются',b_reroll_d:'Меняет три пледа внизу на новые',
+ ad_inter:'МЕЖСТРАНИЧНАЯ РЕКЛАМА',ad_reward:'РЕКЛАМА ЗА НАГРАДУ',ad_loading:'Реклама загружается, попробуй через пару секунд',ad_noreward:'Награда за рекламу не получена',
+ pr4:'Мур-р-рвелично!',pr3:'Невероятно!',pr2:'Отлично!',pr1:'Здорово!',combo:'Комбо ×{0}',clean:'Чистое поле! +300',record:'Новый рекорд!',no_cats:'На поле нет котов',lull_txt:'Колыбельная 🎵',no_hammer_cat:'Котов молотком не трогаем 😸',tap_blanket:'Нажми на плед',buy_for:'Купить за {0} 🪙',
+ endless:'Бесконечный',best_endless:'Рекорд бесконечного режима: {0}',new_sleepy:'<b>Новый котик: Соня!</b><br>Спит в колпаке и очень крепко: у него 5 снов',new_kitten:'<b>Новый котик: Котёнок!</b><br>Чуткий: всего 2 сна, но даёт +100 очков',
+ win_sub:'Уложено котов: {0} · осталось ходов: {1}',o_wake:'Кот проснулся!',o_moves:'Ходы закончились',o_stuck:'Места нет!',o_wake_s:'Плед лёг слишком близко, и сны закончились',o_moves_s:'Осталось уложить котов: {0}',o_stuck_s:'Ни один плед больше не помещается',
+ badge_rec:'🏆 Новый рекорд!',st_level:'уровень',st_cats:'котов',st_score:'счёт',st_best:'рекорд',rv_wake:'Усыпить кота',rv_moves:'+5 ходов',rv_stuck:'Новые пледы',selected:'✓ Выбрано',choose:'Выбрать',bought:'Куплено: {0}',no_coins:'Не хватает монет 🪙',
+ daily_done:'Подарок уже получен. Приходи завтра! 🎁',day_n:'День {0}',version:'Версия {0}',demo:' · демо',testads:' · тестовая реклама'},
+en:{title:'Tuck the Cats',hint_hammer:'🔨 Tap a blanket to remove it',cancel:'Cancel',banner:'Ad banner space',logo:'Tuck the<br>Cats',sub:'A cozy puzzle: don\'t wake the cats',play:'▶ Play',level_n:'Level {0}',endless_btn:'∞ Endless mode',shop:'Shop',settings:'Settings',rules:'Rules',howto:'How to play',
+ tut1:'Drag <b>blankets</b> onto the board',tut2:'Fill a row or a column: it disappears and the sleeping cat in it goes to bed',tut3:'Don\'t put a blanket <b>right next</b> to a cat: each time it loses one dream. Out of dreams, and the cat wakes up!',tut4:'Stuck? Use the <b>boosters</b> under the board',
+ gotit:'Got it!',level_cap:'LEVEL',goal_cats:'cats to tuck in',moves:'moves',go:'Let\'s go!',to_menu:'Menu',pause:'Paused',pause_sub:'The cats are sleeping sweetly…',resume:'Resume',restart:'Restart',again:'Play again',retry:'Retry',win_title:'Level complete!',claim2:'Claim ×2',ad:'AD',next:'Next',
+ free50:'+50 🪙 free',free_tomorrow:'Free coins: tomorrow',tab_tiles:'Blankets',tab_bg:'Backgrounds',tab_acc:'Outfits',you_have:'You have:',coins_lbl:'Coins:',plus1:'+1 free',snd:'🔊 Sounds',mus:'🎵 Music',vib:'📳 Vibration',lang:'🌐 Language',lang_name:'English',privads:'Ad privacy settings',privacy:'Privacy policy',
+ daily_title:'Daily gift',daily_sub:'Come back every day and the gift gets bigger!',claim:'Claim',ad_here:'An AdMob video ad will play here',ad_demo:'demo: the app shows a real ad here',
+ a_hammer:'Hammer',a_lull:'Lullaby',a_reroll:'New blankets',a_gift:'Gift',
+ sh_classic:'Classic',sh_candy:'Candy',sh_forest:'Forest',sh_winter:'Winter',sh_neon:'Neon',sh_royal:'Royal',bg_night:'Night',bg_sunset:'Sunset',bg_sakura:'Sakura',bg_winter:'Winter',bg_space:'Space',acc_none:'No outfit',acc_bow:'Bow',acc_scarf:'Scarf',acc_mask:'Sleep mask',acc_crown:'Crown',
+ b_hammer_d:'Removes any blanket from the board',b_lull_d:'All cats fall back into a deep sleep: dreams are restored',b_reroll_d:'Swaps the three blankets below for new ones',
+ ad_inter:'INTERSTITIAL AD',ad_reward:'REWARDED AD',ad_loading:'The ad is loading, try again in a few seconds',ad_noreward:'No reward: the ad was not finished',
+ pr4:'Purr-fect!',pr3:'Amazing!',pr2:'Great!',pr1:'Nice!',combo:'Combo ×{0}',clean:'Clean board! +300',record:'New record!',no_cats:'No cats on the board',lull_txt:'Lullaby 🎵',no_hammer_cat:'We don\'t hammer cats 😸',tap_blanket:'Tap a blanket',buy_for:'Buy for {0} 🪙',
+ endless:'Endless',best_endless:'Endless mode best: {0}',new_sleepy:'<b>New cat: Sleepyhead!</b><br>Sleeps in a nightcap, very deeply: 5 dreams',new_kitten:'<b>New cat: Kitten!</b><br>A light sleeper: only 2 dreams, but +100 points',
+ win_sub:'Cats tucked in: {0} · moves left: {1}',o_wake:'A cat woke up!',o_moves:'Out of moves',o_stuck:'No room left!',o_wake_s:'A blanket landed too close and the dreams ran out',o_moves_s:'Cats left to tuck in: {0}',o_stuck_s:'None of the blankets fit anymore',
+ badge_rec:'🏆 New record!',st_level:'level',st_cats:'cats',st_score:'score',st_best:'best',rv_wake:'Put the cat to sleep',rv_moves:'+5 moves',rv_stuck:'New blankets',selected:'✓ Selected',choose:'Select',bought:'Purchased: {0}',no_coins:'Not enough coins 🪙',
+ daily_done:'Gift already claimed. Come back tomorrow! 🎁',day_n:'Day {0}',version:'Version {0}',demo:' · demo',testads:' · test ads'}
+};
+function t(k){let s=(TX[LANG]&&TX[LANG][k])||TX.ru[k]||k;for(let i=1;i<arguments.length;i++)s=s.split('{'+(i-1)+'}').join(arguments[i]);return s}
+function applyLang(){
+  try{document.documentElement.lang=LANG;document.title=t('title');
+    document.querySelectorAll('[data-t]').forEach(e=>{e.textContent=t(e.dataset.t)});
+    document.querySelectorAll('[data-th]').forEach(e=>{e.innerHTML=t(e.dataset.th)});
+    document.querySelectorAll('[data-ta]').forEach(e=>{e.setAttribute('aria-label',t(e.dataset.ta))});
+    const lb=document.getElementById('bLang');if(lb)lb.textContent=t('lang_name');
+  }catch(e){}
+}
+
 function buzz(p){if(!SV.vib)return;try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
 
 // ---------- магазин ----------
 const SHOP={
-  tiles:[{id:'classic',name:'Классика',price:0,pal:['#ff6f86','#ffa94d','#3fdcab','#4cb8ff','#a782ff','#ffd43b']},
-    {id:'candy',name:'Конфетки',price:300,pal:['#ff8fc7','#ffb38a','#7fe3d8','#9fb4ff','#c9a0ff','#ffe28a']},
-    {id:'forest',name:'Лесные',price:500,pal:['#6cc070','#3f9a6b','#c99a5b','#e0805f','#e9c46a','#5a9e8f']},
-    {id:'winter',name:'Зимние',price:700,pal:['#eaf6ff','#9fd3ff','#5aa9e6','#b9c2ff','#ff7b9c','#7fe0ff']},
-    {id:'neon',name:'Неон',price:900,pal:['#ff2fd6','#00e5ff','#7cff4f','#ffe600','#ff6b2b','#9b5cff']},
-    {id:'royal',name:'Королевские',price:1200,pal:['#ffcf4a','#ef476f','#06d6a0','#1b8fd6','#b76dff','#ff9f43']}],
-  bg:[{id:'night',name:'Ночь',price:0,pv:'linear-gradient(180deg,#191340,#2f1d5f)'},{id:'sunset',name:'Закат',price:400,pv:'linear-gradient(180deg,#3a1d5c,#c2516a,#f08a5d)'},{id:'sakura',name:'Сакура',price:600,pv:'linear-gradient(180deg,#3b1f4f,#9c4a7e)'},{id:'winter',name:'Зима',price:800,pv:'linear-gradient(180deg,#0f2747,#2c5a8f)'},{id:'space',name:'Космос',price:1000,pv:'radial-gradient(circle at 30% 30%,rgba(255,80,180,.5),transparent 60%),linear-gradient(180deg,#05040f,#160e33)'}],
-  acc:[{id:'none',name:'Без наряда',price:0,ic:'🐱'},{id:'bow',name:'Бантик',price:400,ic:'🎀'},{id:'scarf',name:'Шарфик',price:600,ic:'🧣'},{id:'mask',name:'Маска для сна',price:800,ic:'😴'},{id:'crown',name:'Корона',price:1500,ic:'👑'}]
+  tiles:[{id:'classic',name:'sh_classic',price:0,pal:['#ff6f86','#ffa94d','#3fdcab','#4cb8ff','#a782ff','#ffd43b']},
+    {id:'candy',name:'sh_candy',price:300,pal:['#ff8fc7','#ffb38a','#7fe3d8','#9fb4ff','#c9a0ff','#ffe28a']},
+    {id:'forest',name:'sh_forest',price:500,pal:['#6cc070','#3f9a6b','#c99a5b','#e0805f','#e9c46a','#5a9e8f']},
+    {id:'winter',name:'sh_winter',price:700,pal:['#eaf6ff','#9fd3ff','#5aa9e6','#b9c2ff','#ff7b9c','#7fe0ff']},
+    {id:'neon',name:'sh_neon',price:900,pal:['#ff2fd6','#00e5ff','#7cff4f','#ffe600','#ff6b2b','#9b5cff']},
+    {id:'royal',name:'sh_royal',price:1200,pal:['#ffcf4a','#ef476f','#06d6a0','#1b8fd6','#b76dff','#ff9f43']}],
+  bg:[{id:'night',name:'bg_night',price:0,pv:'linear-gradient(180deg,#191340,#2f1d5f)'},{id:'sunset',name:'bg_sunset',price:400,pv:'linear-gradient(180deg,#3a1d5c,#c2516a,#f08a5d)'},{id:'sakura',name:'bg_sakura',price:600,pv:'linear-gradient(180deg,#3b1f4f,#9c4a7e)'},{id:'winter',name:'bg_winter',price:800,pv:'linear-gradient(180deg,#0f2747,#2c5a8f)'},{id:'space',name:'bg_space',price:1000,pv:'radial-gradient(circle at 30% 30%,rgba(255,80,180,.5),transparent 60%),linear-gradient(180deg,#05040f,#160e33)'}],
+  acc:[{id:'none',name:'acc_none',price:0,ic:'🐱'},{id:'bow',name:'acc_bow',price:400,ic:'🎀'},{id:'scarf',name:'acc_scarf',price:600,ic:'🧣'},{id:'mask',name:'acc_mask',price:800,ic:'😴'},{id:'crown',name:'acc_crown',price:1500,ic:'👑'}]
 };
 const PAL=()=>(SHOP.tiles.find(t=>t.id===SV.sel.tiles)||SHOP.tiles[0]).pal;
-const BOOST={hammer:{ic:'🔨',name:'Молоток',desc:'Убирает любой плед с поля',price:60},lullaby:{ic:'🎵',name:'Колыбельная',desc:'Все коты снова крепко спят: сны восстанавливаются',price:80},reroll:{ic:'🔄',name:'Новые пледы',desc:'Меняет три пледа внизу на новые',price:40}};
+const BOOST={hammer:{ic:'🔨',name:'a_hammer',desc:'b_hammer_d',price:60},lullaby:{ic:'🎵',name:'a_lull',desc:'b_lull_d',price:80},reroll:{ic:'🔄',name:'a_reroll',desc:'b_reroll_d',price:40}};
 
 // ---------- фон ----------
 function applyBg(){
@@ -483,17 +535,17 @@ const Ads={
   between(cb){
     this.cnt++;const now=Date.now()/1000;
     if(this.cnt%ADCFG.interEvery!==0||now-this.last<ADCFG.interGap)return cb();
-    if(!NATIVE){this.last=now;return webAd('МЕЖСТРАНИЧНАЯ РЕКЛАМА',2,cb)}
+    if(!NATIVE){this.last=now;return webAd(t('ad_inter'),2,cb)}
     if(!this.interOk){this.loadInter();return cb()}
     this.last=now;this.fullscreen('interstitialAdDismissed','interstitialAdFailedToShow',()=>ADM.showInterstitial(),()=>{this.loadInter();cb()});
   },
   // реклама за награду
   reward(onOk,onFail){
-    if(!NATIVE){return webAd('РЕКЛАМА ЗА НАГРАДУ',4,onOk)}
-    if(!this.ready||!this.canReq||!this.rewOk){toast('Реклама загружается, попробуй через пару секунд');this.loadRew();onFail&&onFail();return}
+    if(!NATIVE){return webAd(t('ad_reward'),4,onOk)}
+    if(!this.ready||!this.canReq||!this.rewOk){toast(t('ad_loading'));this.loadRew();onFail&&onFail();return}
     let got=false;
     const h=[];listen(ADM,'onRewardedVideoAdReward',()=>{got=true}).then(x=>{if(x)h.push(x)});
-    this.fullscreen('onRewardedVideoAdDismissed','onRewardedVideoAdFailedToShow',()=>ADM.showRewardVideoAd().then(()=>{got=true}),()=>{h.forEach(x=>x.remove());this.loadRew();if(got)onOk();else{toast('Награда за рекламу не получена');onFail&&onFail()}});
+    this.fullscreen('onRewardedVideoAdDismissed','onRewardedVideoAdFailedToShow',()=>ADM.showRewardVideoAd().then(()=>{got=true}),()=>{h.forEach(x=>x.remove());this.loadRew();if(got)onOk();else{toast(t('ad_noreward'));onFail&&onFail()}});
   },
   fullscreen(evDone,evFail,show,after){
     let fin=false;const hs=[];
@@ -517,10 +569,12 @@ const CATC=[{b:'#f4a259',d:'#d27a2c',st:1},{b:'#b8b6d9',d:'#8e8bb8',st:1},{b:'#f
 const CTYPE={norm:{z:3,pts:50,sc:1},sleepy:{z:5,pts:60,sc:1.06},kitten:{z:2,pts:100,sc:.84}};
 let W,H,DPR,L={},SAT=0,SAB=0,MB=null;
 const Q={lvl:0,cap:2,pm:1};
+try{const dm=navigator.deviceMemory,hc=navigator.hardwareConcurrency;if((dm&&dm<=2)||(hc&&hc<=2))Q.lvl=2;else if((dm&&dm<=4)||(hc&&hc<=4))Q.lvl=1}catch(e){}
 function applyQuality(){Q.cap=[2,1.5,1][Q.lvl];Q.pm=[1,.6,.35][Q.lvl];document.body.classList.toggle('lowq',Q.lvl>=1);layout()}
 const sprites=new Map();
 function layout(){
-  DPR=Math.min(window.devicePixelRatio||1,Q.cap);W=window.innerWidth||document.documentElement.clientWidth||360;H=window.innerHeight||document.documentElement.clientHeight||640;
+  W=window.innerWidth||document.documentElement.clientWidth||360;H=window.innerHeight||document.documentElement.clientHeight||640;
+  DPR=Math.max(1,Math.min(window.devicePixelRatio||1,Q.cap,Math.sqrt(3.2e6/(W*H))));
   const pr=$('probe'),cs=getComputedStyle(pr);SAT=parseFloat(cs.paddingTop)||0;SAB=parseFloat(cs.paddingBottom)||0;
   cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);g.setTransform(DPR,0,0,DPR,0,0);
   const bh=NATIVE?(Ads.bannerH||60):46,BO=60;
@@ -530,7 +584,7 @@ function layout(){
   L={B,pad,gap,cell,step:cell+gap,bx:(W-B)/2,by:y0};
   L.boostY=y0+B+6;L.ty=y0+B+BO+B*.2;L.tc=cell*.56;L.tg=gap*.8;L.slots=[W/2-B/3,W/2,W/2+B/3];
   $('boost').style.top=L.boostY+'px';$('hint').style.top=(L.boostY+4)+'px';
-  sprites.clear();measureMenu();
+  sprites.clear();boardLayer=null;measureMenu();
 }
 function measureMenu(){try{const a=document.querySelector('.logo').getBoundingClientRect(),b=document.querySelector('.mbottom').getBoundingClientRect();MB=a.height&&b.height?{top:a.bottom,bot:b.top}:null}catch(e){MB=null}}
 const cellX=i=>L.bx+L.pad+(i%N)*L.step,cellY=i=>L.by+L.pad+Math.floor(i/N)*L.step;
@@ -636,13 +690,13 @@ function place(slot,r,c){
       grid[i]=null});
     score+=Math.round(10*n*n*(1+(streak-1)*.5))+catPts;removed+=cats;
     shake=Math.min(16,4+n*3+streak);play('clear',n,streak);if(cats)setTimeout(()=>play('purr'),120);buzz(n>1?[20,30,40]:25);
-    const praise=n>=4?'Мур-р-рвелично!':n===3?'Невероятно!':n===2?'Отлично!':streak>2?'Здорово!':'';
+    const praise=n>=4?t('pr4'):n===3?t('pr3'):n===2?t('pr2'):streak>2?t('pr1'):'';
     const bcx=L.bx+L.B/2,bcy=L.by+L.B/2;
     if(praise)addText(praise,bcx,bcy-L.cell*.6,{size:L.B*.1,dur:1.3,grad:true,rise:30});
-    if(streak>1)addText('Комбо ×'+streak,bcx,bcy+L.cell*.5,{size:L.B*.065,dur:1.2,col:'#ffd27a',rise:24});
-    if(!grid.some(x=>x&&x.k==='t')){score+=300;setTimeout(()=>{addText('Чистое поле! +300',bcx,bcy,{size:L.B*.075,dur:1.6,col:'#7ef0c8'});play('fanfare');burst(bcx,bcy,PAL(),40,'star',1.6)},300)}
+    if(streak>1)addText(t('combo',streak),bcx,bcy+L.cell*.5,{size:L.B*.065,dur:1.2,col:'#ffd27a',rise:24});
+    if(!grid.some(x=>x&&x.k==='t')){score+=300;setTimeout(()=>{addText(t('clean'),bcx,bcy,{size:L.B*.075,dur:1.6,col:'#7ef0c8'});play('fanfare');burst(bcx,bcy,PAL(),40,'star',1.6)},300)}
   }else{noClear++;if(noClear>=3)streak=0}
-  if(mode==='endless'&&!recordShown&&SV.best>0&&score>SV.best){recordShown=true;setTimeout(()=>{addText('Новый рекорд!',L.bx+L.B/2,L.by-6,{size:L.B*.07,dur:1.6,col:'#ffd166'});play('fanfare')},250)}
+  if(mode==='endless'&&!recordShown&&SV.best>0&&score>SV.best){recordShown=true;setTimeout(()=>{addText(t('record'),L.bx+L.B/2,L.by-6,{size:L.B*.07,dur:1.6,col:'#ffd166'});play('fanfare')},250)}
   updHud();
   if(mode==='level'&&removed>=cfg.goal){state='anim';setTimeout(winLevel,1000);return}
   if(checkWake())return;
@@ -673,22 +727,22 @@ function useBoost(k){
   if(state!=='play'||drag)return;audioInit();
   if(SV.boost[k]<=0){openBuy(k);return}
   if(k==='hammer'){hammer=!hammer;play('click');updBoost();return}
-  if(k==='lullaby'){const cats=grid.map((q,i)=>q&&q.k==='c'?i:-1).filter(i=>i>=0);if(!cats.length){toast('На поле нет котов');return}
+  if(k==='lullaby'){const cats=grid.map((q,i)=>q&&q.k==='c'?i:-1).filter(i=>i>=0);if(!cats.length){toast(t('no_cats'));return}
     SV.boost.lullaby--;save();cats.forEach(i=>{const q=grid[i];q.z=q.zmax;q.touchT=time;burst(cellX(i)+L.cell/2,cellY(i)+L.cell/2,['#cdbcff','#fff','#ffd1dc'],12,'star')});
-    addText('Колыбельная 🎵',L.bx+L.B/2,L.by+L.B/2,{size:L.B*.08,dur:1.4,grad:true});play('lullaby');buzz(20)}
+    addText(t('lull_txt'),L.bx+L.B/2,L.by+L.B/2,{size:L.B*.08,dur:1.4,grad:true});play('lullaby');buzz(20)}
   if(k==='reroll'){SV.boost.reroll--;save();tray=newTray();play('whoosh');buzz(15)}
   updBoost();
 }
 function hammerAt(x,y){
   const c=Math.floor((x-L.bx-L.pad)/L.step),r=Math.floor((y-L.by-L.pad)/L.step);
   if(r<0||c<0||r>=N||c>=N)return false;const i=r*N+c,q=grid[i];
-  if(!q||q.k!=='t'){toast(q?'Котов молотком не трогаем 😸':'Нажми на плед');return true}
+  if(!q||q.k!=='t'){toast(q?t('no_hammer_cat'):t('tap_blanket'));return true}
   const col=PAL()[q.ci];grid[i]=null;dying.push({col,x:cellX(i),y:cellY(i),t0:time});burst(cellX(i)+L.cell/2,cellY(i)+L.cell/2,[col,'#fff','#ffd166'],16,'sq',1.2);
   shake=8;play('hammer');buzz(35);SV.boost.hammer--;save();hammer=false;updBoost();return true;
 }
 function openBuy(k){
-  const b=BOOST[k];buyKey=k;$('buyIc').textContent=b.ic;$('buyName').textContent=b.name;$('buyDesc').textContent=b.desc;
-  $('buyHave').textContent=SV.boost[k];$('buyCoins').textContent=SV.coins;$('bBuyCoins').innerHTML=`Купить за ${b.price} 🪙`;$('bBuyCoins').disabled=SV.coins<b.price;
+  const b=BOOST[k];buyKey=k;$('buyIc').textContent=b.ic;$('buyName').textContent=t(b.name);$('buyDesc').textContent=t(b.desc);
+  $('buyHave').textContent=SV.boost[k];$('buyCoins').textContent=SV.coins;$('bBuyCoins').innerHTML=t('buy_for',b.price);$('bBuyCoins').disabled=SV.coins<b.price;
   if(state==='play')state='paused';showScreen('buyS',true);
 }
 let buyKey='hammer';
@@ -828,11 +882,21 @@ function drawMenu(){
   drawCat(x,y,s,MENUCATS[0],'sleep');const q=MENUCATS[0];
   g.save();g.textAlign='center';for(let k=0;k<2;k++){const p=(time*.45+k*.5)%1;g.globalAlpha=Math.sin(p*Math.PI)*.9;g.fillStyle='#cdbcff';g.font=`900 ${Math.round(s*(.17+k*.06))}px Nunito,sans-serif`;g.fillText('z',x+s*.12+p*s*.16,y-s*.12-p*s*.3)}g.restore();
 }
+let boardLayer=null;
+function buildBoardLayer(){
+  const{bx,by,B,cell}=L,pad=B*.3,size=B+pad*2,c=document.createElement('canvas');c.width=c.height=Math.ceil(size*DPR);
+  const x=c.getContext('2d');x.scale(DPR,DPR);x.translate(pad-bx,pad-by);
+  swapCtx(x,()=>{
+    const gl=g.createRadialGradient(bx+B/2,by+B/2,B*.2,bx+B/2,by+B/2,B*.85);gl.addColorStop(0,'rgba(140,100,255,.18)');gl.addColorStop(1,'rgba(140,100,255,0)');g.fillStyle=gl;g.fillRect(bx-pad,by-pad,size,size);
+    g.fillStyle='rgba(255,255,255,.07)';path(bx,by,B,B,B*.06);g.fill();g.strokeStyle='rgba(255,255,255,.14)';g.lineWidth=1.5;g.stroke();
+    for(let i=0;i<N*N;i++){const x2=cellX(i),y2=cellY(i);g.fillStyle='rgba(10,5,35,.28)';path(x2,y2,cell,cell,cell*.22);g.fill();g.fillStyle='rgba(255,255,255,.035)';path(x2,y2,cell,cell*.5,cell*.22);g.fill()}
+  });
+  boardLayer={c,pad,size};
+}
 function drawBoard(){
   const{bx,by,B,cell}=L;
-  const gl=g.createRadialGradient(bx+B/2,by+B/2,B*.2,bx+B/2,by+B/2,B*.85);gl.addColorStop(0,'rgba(140,100,255,.18)');gl.addColorStop(1,'rgba(140,100,255,0)');g.fillStyle=gl;g.fillRect(bx-B*.3,by-B*.3,B*1.6,B*1.6);
-  g.fillStyle='rgba(255,255,255,.07)';path(bx,by,B,B,B*.06);g.fill();g.strokeStyle='rgba(255,255,255,.14)';g.lineWidth=1.5;g.stroke();
-  for(let i=0;i<N*N;i++){const x=cellX(i),y=cellY(i);g.fillStyle='rgba(10,5,35,.28)';path(x,y,cell,cell,cell*.22);g.fill();g.fillStyle='rgba(255,255,255,.035)';path(x,y,cell,cell*.5,cell*.22);g.fill()}
+  if(!boardLayer)buildBoardLayer();
+  g.drawImage(boardLayer.c,bx-boardLayer.pad,by-boardLayer.pad,boardLayer.size,boardLayer.size);
   const clr=drag&&drag.clr,warn=drag&&drag.warn,pal=PAL();
   for(let i=0;i<N*N;i++){const q=grid[i];if(!q||q.k!=='t')continue;const k=clamp((time-q.t0)/.25,0,1),sc=.55+easeOutBack(k)*.45;if(k>0)drawTile(pal[q.ci],cellX(i),cellY(i),cell,sc)}
   if(hammer){const a=.25+.15*Math.sin(time*8);for(let i=0;i<N*N;i++){const q=grid[i];if(q&&q.k==='t'){g.strokeStyle=`rgba(255,209,102,${a+.3})`;g.lineWidth=2;path(cellX(i)+1,cellY(i)+1,cell-2,cell-2,cell*.22);g.stroke()}}}
@@ -858,7 +922,8 @@ function drawParts(){parts.forEach(p=>{const a=1-p.life/p.max;g.save();g.globalA
 function drawPiece(p,cx,cy,s,gp,al=1,sc=1){const dm=pieceDims(p,s,gp),x0=cx-dm.w/2,y0=cy-dm.h/2,col=PAL()[p.ci];p.cells.forEach(([r,c])=>drawTile(col,x0+c*(s+gp),y0+r*(s+gp),s,sc,al))}
 function drawTray(){tray.forEach((p,i)=>{if(!p||(drag&&drag.slot===i))return;const k=clamp((time-p.t0)/.45,0,1);if(k<=0)return;let x=L.slots[i],y=L.ty+(1-easeOutBack(k))*60;
   if(p.ret){const rk=clamp((time-p.ret.t0)/.2,0,1);if(rk<1){const e=easeOut(rk);x=p.ret.x+(x-p.ret.x)*e;y=p.ret.y+(y-p.ret.y)*e}else p.ret=null}
-  drawPiece(p,x,y+Math.sin(time*2.5+i)*1.5,L.tc,L.tg,(fitsAny(p)?1:.3)*k)})}
+  if(!p.fitT||time-p.fitT>.2){p.fit=fitsAny(p);p.fitT=time}
+  drawPiece(p,x,y+Math.sin(time*2.5+i)*1.5,L.tc,L.tg,(p.fit?1:.3)*k)})}
 function drawDrag(){if(!drag)return;const p=drag.p,s=L.cell*drag.sc,gp=L.gap*drag.sc,y=drag.y-dragOff(p)*((drag.sc-.56)/.44);
   g.save();g.shadowColor='rgba(0,0,0,.35)';g.shadowBlur=18;g.shadowOffsetY=10;drawPiece(p,drag.x,y,s,gp,drag.t?1:.9,1.04);g.restore()}
 function drawTexts(){texts.forEach(t=>{const k=(time-t.t0)/t.dur,pop=k<.2?easeOutBack(k/.2):1,al=k<.7?1:1-(k-.7)/.3,y=t.y-easeOut(k)*t.rise;
@@ -879,10 +944,10 @@ function closeTop(){const id=screenStack.pop();if(id)$(id).classList.remove('sho
 function topScreen(){return screenStack[screenStack.length-1]||null}
 const CATI='<svg viewBox="0 0 24 24"><path d="M4 20V10l3-6 3 5h4l3-5 3 6v10z" fill="#ffb37a"/><path d="M8 13q1.5 1.5 3 0M13 13q1.5 1.5 3 0" stroke="#4b3542" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>';
 function setHud(){
-  const pause='<button class="hbtn" id="bPause" aria-label="Пауза"><svg viewBox="0 0 24 24" fill="#fff"><rect x="6" y="5" width="4" height="14" rx="1.5"/><rect x="14" y="5" width="4" height="14" rx="1.5"/></svg></button>';
+  const pause='<button class="hbtn" id="bPause" aria-label="'+t('pause')+'"><svg viewBox="0 0 24 24" fill="#fff"><rect x="6" y="5" width="4" height="14" rx="1.5"/><rect x="14" y="5" width="4" height="14" rx="1.5"/></svg></button>';
   $('hud').innerHTML=mode==='level'
-    ?`${pause}<div class="score"><div class="lbl">Уровень ${cfg.n}</div><div class="v" id="sv">0</div><div class="b">ходов</div></div><div class="pill" id="goalP">${CATI}<span id="cv">0/0</span></div>`
-    :`${pause}<div class="score"><div class="lbl">Бесконечный</div><div class="v" id="sv">0</div><div class="b"><svg viewBox="0 0 24 24" fill="#ffd166"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg><span id="bv">0</span></div></div><div class="pill">${CATI}<span id="cv">0</span></div>`;
+    ?`${pause}<div class="score"><div class="lbl">${t('level_n',cfg.n)}</div><div class="v" id="sv">0</div><div class="b">${t('moves')}</div></div><div class="pill" id="goalP">${CATI}<span id="cv">0/0</span></div>`
+    :`${pause}<div class="score"><div class="lbl">${t('endless')}</div><div class="v" id="sv">0</div><div class="b"><svg viewBox="0 0 24 24" fill="#ffd166"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg><span id="bv">0</span></div></div><div class="pill">${CATI}<span id="cv">0</span></div>`;
   $('bPause').addEventListener('click',()=>{audioInit();play('click');pauseGame()});
 }
 function updHud(force){
@@ -896,7 +961,7 @@ function addCoins(n){SV.coins+=n;save();updCoins(true);play('coin')}
 function pauseGame(){if(state!=='play')return;if(drag){drag=null}state='paused';showScreen('pauseS',true)}
 function resumeGame(){closeTop();state='play'}
 function goMenu(){scene='menu';state='menu';Ads.hideBanner();hammer=false;showScreen('menu');updMenu();maybeDaily();requestAnimationFrame(measureMenu)}
-function updMenu(){$('playLvl').textContent='Уровень '+SV.level;$('mBest').textContent=SV.best?'Рекорд бесконечного режима: '+SV.best:'';updCoins();$('mGift').classList.toggle('has',SV.daily.last!==today())}
+function updMenu(){$('playLvl').textContent=t('level_n',SV.level);$('mBest').textContent=SV.best?t('best_endless',SV.best):'';updCoins();$('mGift').classList.toggle('has',SV.daily.last!==today())}
 
 function catFace(m){
   const eyes=m==='angry'?'<ellipse cx="44" cy="60" rx="9" ry="10" fill="#fff"/><ellipse cx="76" cy="60" rx="9" ry="10" fill="#fff"/><circle cx="44" cy="62" r="4" fill="#1b1030"/><circle cx="76" cy="62" r="4" fill="#1b1030"/><path d="M34 46l16 6M86 46l-16 6" stroke="#4b3542" stroke-width="4" stroke-linecap="round"/><path d="M52 84q8-8 16 0q-8 7-16 0z" fill="#6b1f35"/>'
@@ -917,15 +982,15 @@ function showIntro(){
   const c=levelCfg(SV.level);$('iLvl').textContent=c.n;$('iGoal').textContent=c.goal;$('iMoves').textContent=c.moves;
   const box=$('iNew');box.innerHTML='';
   const nt=c.n===4?'sleepy':c.n===9?'kitten':null;
-  if(nt){const d=document.createElement('div');d.className='newcat';d.appendChild(catMini(nt));const t=document.createElement('div');
-    t.innerHTML=nt==='sleepy'?'<b>Новый котик: Соня!</b><br>Спит в колпаке и очень крепко: у него 5 снов':'<b>Новый котик: Котёнок!</b><br>Чуткий: всего 2 сна, но даёт +100 очков';d.appendChild(t);box.appendChild(d)}
+  if(nt){const d=document.createElement('div');d.className='newcat';d.appendChild(catMini(nt));const t2=document.createElement('div');
+    t2.innerHTML=nt==='sleepy'?t('new_sleepy'):t('new_kitten');d.appendChild(t2);box.appendChild(d)}
   scene='menu';state='intro';Ads.hideBanner();showScreen('introS');
 }
 function winLevel(){
   state='win';const c=cfg,ratio=movesLeft/c.moves,stars=ratio>=.35?3:ratio>=.15?2:1;
   SV.stars[c.n]=Math.max(SV.stars[c.n]||0,stars);SV.level=c.n+1;save();
   const coins=20+stars*10;winCoins=coins;$('wCoins').textContent=coins;$('wFace').innerHTML=catFace('happy');
-  $('wSub').textContent=`Уложено котов: ${removed} · осталось ходов: ${movesLeft}`;
+  $('wSub').textContent=t('win_sub',removed,movesLeft);
   const ss=[...$('wStars').children];ss.forEach(s=>s.className='');
   showScreen('winS',true);play('fanfare');buzz([30,40,60]);
   ss.forEach((s,i)=>setTimeout(()=>{s.className=i<stars?'on':'off';if(i<stars){play('star',i);burst(W/2+(i-1)*60,H*.35,['#ffd166','#fff'],14,'star',1)}},450+i*350));
@@ -937,22 +1002,22 @@ function lose(reason){
   overReason=reason;state='over';const lvl=mode==='level';
   if(!lvl){const earn=Math.floor(score/40)-coinsGiven;if(earn>0){coinsGiven+=earn;SV.coins+=earn}const rec=score>SV.best;if(rec)SV.best=score;save();lose.rec=rec&&score>0;lose.earn=coinsGiven}
   $('oFace').innerHTML=catFace(reason==='wake'?'angry':'sleep');
-  $('oTitle').textContent=reason==='wake'?'Кот проснулся!':reason==='moves'?'Ходы закончились':'Места нет!';
-  $('oSub').textContent=reason==='wake'?'Плед лёг слишком близко, и сны закончились':reason==='moves'?`Осталось уложить котов: ${cfg.goal-removed}`:'Ни один плед больше не помещается';
-  $('oBadge').innerHTML=!lvl&&lose.rec?'<span class="badge">🏆 Новый рекорд!</span>':'';
-  $('oStats').innerHTML=lvl?`<div class="st"><b>${cfg.n}</b><span>уровень</span></div><div class="st"><b>${removed}/${cfg.goal}</b><span>котов</span></div>`
-    :`<div class="st"><b>${score}</b><span>счёт</span></div><div class="st"><b>${SV.best}</b><span>рекорд</span></div><div class="st"><b>${removed}</b><span>котов</span></div>`;
+  $('oTitle').textContent=reason==='wake'?t('o_wake'):reason==='moves'?t('o_moves'):t('o_stuck');
+  $('oSub').textContent=reason==='wake'?t('o_wake_s'):reason==='moves'?t('o_moves_s',cfg.goal-removed):t('o_stuck_s');
+  $('oBadge').innerHTML=!lvl&&lose.rec?'<span class="badge">'+t('badge_rec')+'</span>':'';
+  $('oStats').innerHTML=lvl?`<div class="st"><b>${cfg.n}</b><span>${t('st_level')}</span></div><div class="st"><b>${removed}/${cfg.goal}</b><span>${t('st_cats')}</span></div>`
+    :`<div class="st"><b>${score}</b><span>${t('st_score')}</span></div><div class="st"><b>${SV.best}</b><span>${t('st_best')}</span></div><div class="st"><b>${removed}</b><span>${t('st_cats')}</span></div>`;
   $('oCoins').innerHTML=!lvl&&coinsGiven>0?`<div class="coinline">+${coinsGiven} 🪙</div>`:'';
   const can=!used[reason];const rb=$('bRevive');rb.style.display=can?'flex':'none';
-  rb.innerHTML=(reason==='wake'?'Усыпить кота':reason==='moves'?'+5 ходов':'Новые пледы')+' <span class="adtag">РЕКЛАМА</span>';
-  $('bAgain').textContent=lvl?'Заново':'Ещё раз';
+  rb.innerHTML=(reason==='wake'?t('rv_wake'):reason==='moves'?t('rv_moves'):t('rv_stuck'))+' <span class="adtag">'+t('ad')+'</span>';
+  $('bAgain').textContent=lvl?t('retry'):t('again');
   showScreen('overS',true);!lvl&&lose.rec?play('fanfare'):play('over');updCoins();
 }
 function revive(){
   const r=overReason;
   Ads.reward(()=>{used[r]=true;closeTop();state='play';
     if(r==='wake'){grid.forEach((q,i)=>{if(q&&q.k==='c'&&q.woke){q.woke=false;q.z=q.zmax;q.touchT=time;burst(cellX(i)+L.cell/2,cellY(i)+L.cell/2,['#cdbcff','#fff'],14,'star')}});play('purr');if(mode==='level'&&movesLeft<=0)movesLeft=3;updHud();continueTurn()}
-    else if(r==='moves'){movesLeft+=5;updHud();play('coin');addText('+5 ходов',L.bx+L.B/2,L.by+L.B/2,{size:L.B*.09,grad:true,dur:1.3});continueTurn()}
+    else if(r==='moves'){movesLeft+=5;updHud();play('coin');addText(t('rv_moves'),L.bx+L.B/2,L.by+L.B/2,{size:L.B*.09,grad:true,dur:1.3});continueTurn()}
     else{tray=newTray();play('whoosh');checkStuck()}
   });
 }
@@ -961,29 +1026,29 @@ function revive(){
 let shopTab='tiles';
 function renderShop(){
   updCoins();const grid2=$('shopGrid');grid2.innerHTML='';
-  document.querySelectorAll('#shopS .tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===shopTab));
+  document.querySelectorAll('#shopS .tabs button').forEach(b=>b.classList.toggle('on',b.dataset.k===shopTab));
   SHOP[shopTab].forEach(it=>{
     const own=SV.own[shopTab].includes(it.id),sel=SV.sel[shopTab]===it.id;const d=document.createElement('div');d.className='item'+(sel?' sel':'');
     let pv='';if(shopTab==='tiles')pv=`<div class="pv" style="background:rgba(0,0,0,.2)">${it.pal.slice(0,4).map(c=>`<i style="background:${c}"></i>`).join('')}</div>`;
     else if(shopTab==='bg')pv=`<div class="pv" style="background:${it.pv}"></div>`;else pv=`<div class="pv" style="background:rgba(0,0,0,.2)">${it.ic}</div>`;
-    d.innerHTML=`${pv}<div class="nm">${it.name}</div><button class="${sel?'selb':own?'owned':''}">${sel?'✓ Выбрано':own?'Выбрать':it.price+' 🪙'}</button>`;
+    d.innerHTML=`${pv}<div class="nm">${t(it.name)}</div><button class="${sel?'selb':own?'owned':''}">${sel?t('selected'):own?t('choose'):it.price+' 🪙'}</button>`;
     d.querySelector('button').addEventListener('click',()=>{audioInit();
       if(sel)return;
       if(own){SV.sel[shopTab]=it.id;save();play('click')}
-      else if(SV.coins>=it.price){SV.coins-=it.price;SV.own[shopTab].push(it.id);SV.sel[shopTab]=it.id;save();play('fanfare');toast('Куплено: '+it.name)}
-      else{play('bad');toast('Не хватает монет 🪙');return}
+      else if(SV.coins>=it.price){SV.coins-=it.price;SV.own[shopTab].push(it.id);SV.sel[shopTab]=it.id;save();play('fanfare');toast(t('bought',t(it.name)))}
+      else{play('bad');toast(t('no_coins'));return}
       if(shopTab==='bg')applyBg();sprites.clear();renderShop()});
     grid2.appendChild(d)});
-  const left=SV.free.day===today()?5-SV.free.n:5;$('bFreeCoins').disabled=left<=0;$('bFreeCoins').innerHTML=left>0?`+50 🪙 бесплатно <span class="adtag">РЕКЛАМА</span>`:'Бесплатные монеты: завтра';
+  const left=SV.free.day===today()?5-SV.free.n:5;$('bFreeCoins').disabled=left<=0;$('bFreeCoins').innerHTML=left>0?t('free50')+' <span class="adtag">'+t('ad')+'</span>':t('free_tomorrow');
 }
 // ---------- ежедневный бонус ----------
 const DAILY=[50,80,120,160,220,300,500];
 function dailyIdx(){const d=SV.daily;return d.last===yesterday()?d.streak%7:0}
 function maybeDaily(){if(SV.tut&&SV.daily.last!==today())setTimeout(()=>{if(scene==='menu'&&!topScreen()||topScreen()==='menu')openDaily()},400)}
 function openDaily(){
-  if(SV.daily.last===today()){toast('Подарок уже получен. Приходи завтра! 🎁');return}
+  if(SV.daily.last===today()){toast(t('daily_done'));return}
   const idx=dailyIdx();const box=$('days');box.innerHTML='';
-  DAILY.forEach((v,i)=>{const d=document.createElement('div');d.className='day'+(i<idx?' got':'')+(i===idx?' now':'')+(i===6?' big':'');d.innerHTML=`День ${i+1}<b>${i<idx?'✓':v+' 🪙'}</b>`;box.appendChild(d)});
+  DAILY.forEach((v,i)=>{const d=document.createElement('div');d.className='day'+(i<idx?' got':'')+(i===idx?' now':'')+(i===6?' big':'');d.innerHTML=`${t('day_n',i+1)}<b>${i<idx?'✓':v+' 🪙'}</b>`;box.appendChild(d)});
   showScreen('dailyS',true);
 }
 function claimDaily(mult){const idx=dailyIdx();SV.daily.streak=idx+1;SV.daily.last=today();addCoins(DAILY[idx]*mult);closeTop();updMenu();burst(W/2,H*.4,['#ffd166','#fff'],30,'star',1.3);toast(`+${DAILY[idx]*mult} 🪙`)}
@@ -1008,7 +1073,7 @@ onBtn('bWinNext',()=>{addCoins(winCoins);closeTop();Ads.between(()=>showIntro())
 onBtn('bWinX2',()=>{$('bWinX2').disabled=true;Ads.reward(()=>{addCoins(winCoins*2);toast(`+${winCoins*2} 🪙`);closeTop();Ads.between(()=>showIntro())},()=>{$('bWinX2').disabled=false})});
 onBtn('mShop',()=>{shopTab='tiles';renderShop();showScreen('shopS',true)});
 onBtn('shopX',()=>{closeTop();updMenu()});
-document.querySelectorAll('#shopS .tabs button').forEach(b=>b.addEventListener('click',()=>{play('click');shopTab=b.dataset.t;renderShop()}));
+document.querySelectorAll('#shopS .tabs button').forEach(b=>b.addEventListener('click',()=>{play('click');shopTab=b.dataset.k;renderShop()}));
 onBtn('bFreeCoins',()=>{const f=SV.free;if(f.day!==today()){f.day=today();f.n=0}if(f.n>=5)return;Ads.reward(()=>{f.n++;addCoins(50);toast('+50 🪙');renderShop()})});
 onBtn('mGift',()=>openDaily());
 onBtn('bDaily',()=>claimDaily(1));
@@ -1016,17 +1081,18 @@ onBtn('bDailyX2',()=>Ads.reward(()=>claimDaily(2)));
 onBtn('bHammer',()=>useBoost('hammer'));onBtn('bLull',()=>useBoost('lullaby'));onBtn('bReroll',()=>useBoost('reroll'));
 onBtn('hintX',()=>{hammer=false;updBoost()});
 onBtn('buyX',()=>{closeTop();if(scene==='game'&&!topScreen())state='play'});
-onBtn('bBuyCoins',()=>{const b=BOOST[buyKey];if(SV.coins<b.price){toast('Не хватает монет 🪙');return}SV.coins-=b.price;SV.boost[buyKey]++;save();updCoins();updBoost();toast(b.name+' +1');closeTop();if(scene==='game'&&!topScreen())state='play'});
-onBtn('bBuyAd',()=>Ads.reward(()=>{SV.boost[buyKey]++;save();updBoost();toast(BOOST[buyKey].name+' +1');closeTop();if(scene==='game'&&!topScreen())state='play'}));
+onBtn('bBuyCoins',()=>{const b=BOOST[buyKey];if(SV.coins<b.price){toast(t('no_coins'));return}SV.coins-=b.price;SV.boost[buyKey]++;save();updCoins();updBoost();toast(t(b.name)+' +1');closeTop();if(scene==='game'&&!topScreen())state='play'});
+onBtn('bBuyAd',()=>Ads.reward(()=>{SV.boost[buyKey]++;save();updBoost();toast(t(BOOST[buyKey].name)+' +1');closeTop();if(scene==='game'&&!topScreen())state='play'}));
 function openSettings(){refreshSet();showScreen('setS',true)}
 function refreshSet(){$('swSnd').classList.toggle('on',SV.snd);$('swMus').classList.toggle('on',SV.mus);$('swVib').classList.toggle('on',SV.vib)}
 onBtn('mSet',()=>openSettings());
 onBtn('setX',()=>closeTop());
 onBtn('swSnd',()=>{SV.snd=!SV.snd;save();applyAudio();refreshSet()});
 onBtn('swMus',()=>{SV.mus=!SV.mus;save();applyAudio();refreshSet()});
+onBtn('bLang',()=>{LANG=LANG==='ru'?'en':'ru';SV.lang=LANG;save();applyLang();updVer();updMenu();if(scene==='game'){setHud();updHud(true)}refreshSet()});
 onBtn('swVib',()=>{SV.vib=!SV.vib;save();refreshSet();buzz(30)});
 onBtn('bPrivAds',()=>{if(ADM)ADM.showPrivacyOptionsForm().catch(()=>{})});
-$('privLink').href=PRIVACY_URL;$('verV').textContent='Версия '+VERSION+(NATIVE?'':' · демо')+(ADCFG.test?' · тестовая реклама':'');
+$('privLink').href=PRIVACY_URL;function updVer(){$('verV').textContent=t('version',VERSION)+(NATIVE?'':t('demo'))+(ADCFG.test?t('testads'):'')}updVer();
 
 // кнопка «назад» на Android
 function setupNative(){
@@ -1046,7 +1112,7 @@ function setupNative(){
 // ---------- запуск ----------
 let rt;function onResize(){drag=null;clearTimeout(rt);rt=setTimeout(layout,120)}
 window.addEventListener('resize',onResize);window.addEventListener('orientationchange',onResize);
-applyBg();layout();goMenu();requestAnimationFrame(frame);
+applyLang();applyBg();applyQuality();goMenu();requestAnimationFrame(frame);
 try{setupNative()}catch(e){}
 try{Ads.init().catch(()=>{})}catch(e){}
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>sprites.clear());

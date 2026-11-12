@@ -67,7 +67,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { api: 26, profile: "Nexus 5" }
+          - { api: 28, profile: "Nexus 5" }
           - { api: 29, profile: "Nexus 5" }
           - { api: 33, profile: "pixel_6" }
           - { api: 35, profile: "pixel_7_pro" }
