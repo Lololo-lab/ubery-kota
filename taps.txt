@@ -1,0 +1,6 @@
+tapped Play 1280 1115
+tapped Got it 1280 1176
+tapped go! 1280 941
+tapped Menu 1280 1061
+tapped Claim 1280 1151
+tapped Ranking 1533 1406
