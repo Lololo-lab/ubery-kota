@@ -4,9 +4,15 @@
   "webDir": "www",
   "android": {
     "backgroundColor": "#1a1442",
-    "allowMixedContent": false
+    "allowMixedContent": false,
+    "minWebViewVersion": 60
   },
   "plugins": {
-    "SplashScreen": { "launchShowDuration": 0 }
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "server": {
+    "errorPath": "webview.html"
   }
 }

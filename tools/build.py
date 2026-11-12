@@ -19,3 +19,6 @@ out = out.replace('<script>/*CAPACITOR*/</script>', '<script>' + cap + '</script
 (root / 'www').mkdir(exist_ok=True)
 (root / 'www/index.html').write_text(out, encoding='utf-8')
 print('www/index.html', len(out) // 1024, 'KB')
+
+(root / 'www/webview.html').write_text((root / 'src/webview.html').read_text(encoding='utf-8'), encoding='utf-8')
+print('www/webview.html')
