@@ -775,7 +775,7 @@ function drawZs(x,y,s,q){
   for(let k=0;k<2;k++){const p=(time*.45+k*.5+q.ph)%1,a=Math.sin(p*Math.PI);g.globalAlpha=a*.9;g.fillStyle='#cdbcff';g.font=`900 ${Math.round(s*(.17+k*.06))}px Nunito,sans-serif`;g.fillText('z',x+s*.12+p*s*.16,y-s*.12-p*s*.3)}
   g.restore();
   const n=q.zmax||3,sp=n>3?s*.09:s*.12,r=n>3?s*.032:s*.04;
-  for(let k=0;k<n;k++){g.fillStyle=k<q.z?(q.z===1?'#ff8fa8':'#b9a2ff'):'rgba(255,255,255,.14)';circ(x-sp*(n-1)/2+k*sp,y+s*.4,r)}
+  for(let k=0;k<n;k++){g.fillStyle=k<q.z?(q.z===1?'#ff8fa8':'#b9a2ff'):'rgba(255,255,255,.14)';circ(x-sp*(n-1)/2+k*sp,y+s*.42,r)}
 }
 
 // ---------- цикл ----------
@@ -816,13 +816,13 @@ function drawBoard(){
   for(let i=0;i<N*N;i++){const q=grid[i];if(!q||q.k!=='t')continue;const k=clamp((time-q.t0)/.25,0,1),sc=.55+easeOutBack(k)*.45;if(k>0)drawTile(pal[q.ci],cellX(i),cellY(i),cell,sc)}
   if(hammer){const a=.25+.15*Math.sin(time*8);for(let i=0;i<N*N;i++){const q=grid[i];if(q&&q.k==='t'){g.strokeStyle=`rgba(255,209,102,${a+.3})`;g.lineWidth=2;path(cellX(i)+1,cellY(i)+1,cell-2,cell-2,cell*.22);g.stroke()}}}
   if(drag&&drag.ghost){drag.ghost.forEach(i=>drawTile(pal[drag.p.ci],cellX(i),cellY(i),cell,1,.38));
-    if(clr&&clr.size){const a=.16+.1*Math.sin(time*10);g.fillStyle=`rgba(255,255,255,${a})`;clr.forEach(i=>{path(cellX(i),cellY(i),cell,cell,cell*.22);g.fill()})}}
+    if(clr&&clr.size){const a=.22+.12*Math.sin(time*10);g.fillStyle=`rgba(255,255,255,${a})`;clr.forEach(i=>{path(cellX(i),cellY(i),cell,cell,cell*.22);g.fill()})}}
   dying.forEach(d=>{const k=clamp((time-d.t0)/.4,0,1);if(k<=0){drawTile(d.col,d.x,d.y,cell);return}g.save();const cx=d.x+cell/2,cy=d.y+cell/2;g.translate(cx,cy);g.rotate(k*.6);g.translate(-cx,-cy);drawTile(d.col,d.x,d.y,cell,Math.max(.05,1+k*1.2*(1-k)-k*.9),1-k);g.restore()});
   for(let i=0;i<N*N;i++){const q=grid[i];if(!q||q.k!=='c')continue;const x=cellX(i)+cell/2,y=cellY(i)+cell/2,w=warn&&warn.has(i),inC=clr&&clr.has(i);
     g.fillStyle=q.woke?'rgba(255,80,110,.3)':'rgba(170,140,255,.13)';path(cellX(i),cellY(i),cell,cell,cell*.22);g.fill();
     if(w&&!inC){g.strokeStyle=`rgba(255,90,120,${.6+.4*Math.sin(time*14)})`;g.lineWidth=2.5;path(cellX(i)+1,cellY(i)+1,cell-2,cell-2,cell*.22);g.stroke()}
     if(inC){g.strokeStyle=`rgba(126,240,200,${.6+.4*Math.sin(time*10)})`;g.lineWidth=2.5;path(cellX(i)+1,cellY(i)+1,cell-2,cell-2,cell*.22);g.stroke()}
-    drawCat(x,y+cell*.02,cell*1.16,q,q.woke?'woke':(w&&!inC?'warn':'sleep'));if(!q.woke)drawZs(x,y,cell,q);
+    drawCat(x,y,cell*1.28,q,q.woke?'woke':(w&&!inC?'warn':'sleep'));if(!q.woke)drawZs(x,y,cell,q);
     if(w&&!inC){g.save();g.font=`900 ${Math.round(cell*.36)}px Nunito,sans-serif`;g.textAlign='center';g.fillStyle='#ff5d7a';g.strokeStyle='#fff';g.lineWidth=3;const yy=cellY(i)-cell*.08+Math.sin(time*12)*2;g.strokeText('!',x+cell*.3,yy);g.fillText('!',x+cell*.3,yy);g.restore()}
     if(inC){g.save();g.font=`${Math.round(cell*.3)}px sans-serif`;g.textAlign='center';g.fillText('🛏️',x+cell*.3,cellY(i)+cell*.12+Math.sin(time*8)*2);g.restore()}}
 }
@@ -1025,7 +1025,7 @@ if(APP){
 let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,120)});
 applyBg();layout();goMenu();requestAnimationFrame(frame);Ads.init();
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>sprites.clear());
-window.__ubk={drawCatTo:(cx,x,y,s,q)=>swapCtx(cx,()=>{drawCat(x,y,s,q,'sleep')}),tileTo:(cx,col,x,y,s)=>swapCtx(cx,()=>drawTile(col,x,y,s)),get state(){return state},get scene(){return scene},get score(){return score},get tray(){return tray},get grid(){return grid},get L(){return L},get SV(){return SV},get cfg(){return cfg},get movesLeft(){return movesLeft},get removed(){return removed},place,canPlace,touchedCats,N,startLevel,startEndless};
+window.__ubk={win:()=>{removed=cfg.goal;movesLeft=Math.round(cfg.moves*.5);winLevel()},drawCatTo:(cx,x,y,s,q)=>swapCtx(cx,()=>{drawCat(x,y,s,q,'sleep')}),tileTo:(cx,col,x,y,s)=>swapCtx(cx,()=>drawTile(col,x,y,s)),get state(){return state},get scene(){return scene},get score(){return score},get tray(){return tray},get grid(){return grid},get L(){return L},get SV(){return SV},get cfg(){return cfg},get movesLeft(){return movesLeft},get removed(){return removed},place,canPlace,touchedCats,N,startLevel,startEndless};
 })();
 </script>
 </body>
