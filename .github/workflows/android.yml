@@ -105,14 +105,24 @@ jobs:
             sleep 18
             adb exec-out screencap -p > s1-menu.png
             adb shell dumpsys webviewupdate | grep -i "current webview package" > webview.txt || true
-            python3 tools/tap_text.py "Играть" > taps.txt
+            python3 tools/tap_text.py "Play" > taps.txt
             sleep 3
-            python3 tools/tap_text.py "Понятно" >> taps.txt
+            python3 tools/tap_text.py "Got it" >> taps.txt
             sleep 3
             adb exec-out screencap -p > s2-intro.png
-            python3 tools/tap_text.py "Поехали" >> taps.txt
+            python3 tools/tap_text.py "go!" >> taps.txt
             sleep 4
             adb exec-out screencap -p > s3-game.png
+            adb shell input keyevent 4
+            sleep 2
+            python3 tools/tap_text.py "Menu" >> taps.txt
+            sleep 3
+            python3 tools/tap_text.py "Ranking" >> taps.txt
+            sleep 3
+            adb exec-out screencap -p > s4-nick.png
+            python3 tools/tap_text.py "Save" >> taps.txt
+            sleep 8
+            adb exec-out screencap -p > s5-board.png
             adb shell pidof kg.lololo.uberikota > alive.txt || echo "APP NOT RUNNING" > alive.txt
             adb logcat -d > logcat.txt
 

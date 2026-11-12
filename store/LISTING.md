@@ -21,6 +21,7 @@
 • Комбо, сочные эффекты, мурчание и колыбельная музыка
 • Подсказки: молоток, колыбельная и новые пледы
 • Магазин: пледы, фоны и наряды для котиков (бантик, шарфик, маска для сна, корона)
+• Онлайн-рейтинг игроков с никами
 • Ежедневные подарки
 • Играй без интернета
 
@@ -50,6 +51,7 @@ Drag soft blankets onto the board to fill whole rows and columns. A full line di
 • Combos, juicy effects, purring and lullaby music
 • Boosters: hammer, lullaby and new blankets
 • Shop: blankets, backgrounds and outfits for cats (bow, scarf, sleep mask, crown)
+• Online leaderboard with nicknames
 • Daily gifts
 • Play offline
 
